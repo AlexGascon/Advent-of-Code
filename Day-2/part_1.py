@@ -31,7 +31,7 @@ def test_row_difference():
     assert row_difference("7 5 3") == 4
     assert row_difference("2 4 6 8") == 6
 
-def test_corruption_checksum():
+def test_spreadsheet_checksum():
     test_spreadsheet = "5 1 9 5\n7 5 3\n2 4 6 8"
     assert spreadsheet_checksum(test_spreadsheet) == 18
 
