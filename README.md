@@ -1,4 +1,6 @@
-![img](http://www.brianbunke.com/images/aoc2017.png)
+<p align="center">
+ <img src=http://www.brianbunke.com/images/aoc2017.png>
+</p>
 
 # Advent-of-Code-2017
 Repository containing the solutions to the programming challenges included in the 2017 edition of "Advent of Code"
