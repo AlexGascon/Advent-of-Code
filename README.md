@@ -15,3 +15,5 @@ Day 3 - Spiral Memory: , [Part 2](https://github.com/AlexGascon/Advent-of-Code-2
 Day 4 - High-Entropy Passphrases: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-4/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-4/part_2.py)
 
 Day 5 - A Maze of Twisty Trampolines, All Alike: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-5/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-5/part_2.py)
+
+Day 6 - Memory Reallocation: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-6/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-6/part_2.py)
