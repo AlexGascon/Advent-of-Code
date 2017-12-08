@@ -135,7 +135,7 @@ def next_odd_square(x):
 
 def corner_to_center(corner):
     """Computes the distance from a corner to the center of the spiral.
-    IMPORTANT: the given corner must be located on the lower-left diagonal
+    IMPORTANT: the given corner must be located on the lower-right diagonal
     of the spiral"""
     return sqrt(corner) - 1
 
@@ -147,7 +147,7 @@ def closest_corners(x):
     side_length = sqrt(next_odd_square(x))
     distance_between_corners = side_length - 1
 
-    # We start on the lower left corner (the one we can find)
+    # We start on the lower right corner (the one we can find)
     next_corner = next_odd_square(x)
     previous_corner = next_corner - distance_between_corners
 
