@@ -28,4 +28,4 @@ Day 10 - Knot Hash: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/t
 
 Day 11 - Hex Ed: _(Temporarily skipped)_
 
-Day 12 - Digital Plumber: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-12/part_1.py)
+Day 12 - Digital Plumber: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-12/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-12/part_2.py)
