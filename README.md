@@ -31,3 +31,5 @@ Day 11 - Hex Ed: _(Temporarily skipped)_
 Day 12 - Digital Plumber: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-12/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-12/part_2.py)
 
 Day 13 - Packet Scanners: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-13/part_1.py), [Part 2](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-13/part_2.py)
+
+Day 14 - Disk Defragmentation: [Part 1](https://github.com/AlexGascon/Advent-of-Code-2017/tree/master/Day-14/part_1.py)
