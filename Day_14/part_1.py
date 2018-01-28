@@ -47,6 +47,8 @@ Given your actual key string, how many squares are used?
 
 Your puzzle input is oundnydw"""
 
+import Day_10.part_2
+
 """KNOT HASH PART"""
 
 def dense_hash_element(sparse_hash_slice):
@@ -113,7 +115,7 @@ def ascii_knot_hash(stream, knot_size=256):
 """ACTUAL CODE PART"""
 
 def used_bits(input_str):
-    knot_hash = ascii_knot_hash(input_str)
+    knot_hash = Day_10.part_2.ascii_knot_hash(input_str)
     return hex_to_bits(knot_hash).count('1')
 
 
