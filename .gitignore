@@ -102,3 +102,9 @@ ENV/
 
 # PyCharm config
 .idea/*
+
+# VSCode config
+.vscode/*
+
+# Elixir compiled files
+*.beam
