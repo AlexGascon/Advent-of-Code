@@ -5,21 +5,24 @@ defmodule AdventOfCode2018.Day01.Part2 do
     file_path
     |> Utils.read_int_lines!
     |> Stream.cycle
-    |> find_repeated
+    |> find_first_repeated
   end
 
-  def find_repeated(cycle) do
+  def find_first_repeated(cycle) do
     Enum.reduce_while(
       cycle,
       {0, %{}},
-      fn elem, {acc, seen_frequencies} ->
-        case Map.get(seen_frequencies, acc) do
-          nil ->
-            {:cont, {acc + elem, Map.put(seen_frequencies, acc, true)}}
-          true ->
-            {:halt, acc}
-        end
-      end
+      &check_if_repeated(&1, &2)
     )
+  end
+
+  defp check_if_repeated(value, {accumulated, seen_frequencies}) do
+    case Map.has_key?(seen_frequencies, accumulated) do
+      true ->
+        {:halt, accumulated}
+      false ->
+        seen_frequencies = Map.put(seen_frequencies, accumulated, true)
+        {:cont, {value + accumulated, seen_frequencies}}
+    end
   end
 end
