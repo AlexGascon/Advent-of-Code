@@ -8,7 +8,7 @@ defmodule AdventOfCode2018.Day01.Part2 do
     |> find_first_repeated
   end
 
-  def find_first_repeated(cycle) do
+  defp find_first_repeated(cycle) do
     Enum.reduce_while(
       cycle,
       {0, %{}},
