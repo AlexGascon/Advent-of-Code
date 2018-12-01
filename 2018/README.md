@@ -6,3 +6,5 @@
 Repository containing the solutions to the programming challenges included in the 2018 edition of "Advent of Code"
 
 ### Currently solved challenges:
+
+Day 1 - Chronal Calibration: [Part 1](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_01/part_1.ex), [Part 2](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_01/part_2.ex)
