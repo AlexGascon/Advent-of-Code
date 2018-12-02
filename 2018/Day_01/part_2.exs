@@ -26,3 +26,14 @@ defmodule AdventOfCode2018.Day01.Part2 do
     end
   end
 end
+
+ExUnit.start
+
+defmodule AdventOfCode2018.Day01.Test2 do
+  use ExUnit.Case
+  
+  import AdventOfCode2018.Day01.Part2
+  
+  assert repeated_frequency("inputs/test_input_4.txt") == 5
+  assert repeated_frequency("inputs/test_input_5.txt") == 10
+end
