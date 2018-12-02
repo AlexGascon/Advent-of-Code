@@ -10,4 +10,10 @@ defmodule AdventOfCode2018.Utils do
     |> read_lines!
     |> Stream.map(&String.to_integer(&1))
   end
+
+  def read_char_lists!(file_path) do
+  file_path
+    |> read_lines!
+    |> Stream.map(&String.to_charlist(&1))
+  end
 end
