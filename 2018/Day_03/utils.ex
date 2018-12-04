@@ -26,7 +26,12 @@ end
 defmodule AdventOfCode2018.Day03.Fabric do
   @fabric_side 1000
 
-  def mark_occuped_space(claim, fabric) do
+  def occupation(claims) do
+    claims
+    |> Enum.reduce(%{}, fn claim, fabric -> mark_occuped_space(claim, fabric) end)
+  end
+
+  defp mark_occuped_space(claim, fabric) do
     claim
     |> occuped_space
     |> Enum.reduce(fabric, fn tile, cloth -> Map.update(cloth, tile, 1, &(&1 + 1)) end)

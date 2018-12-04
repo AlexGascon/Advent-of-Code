@@ -1,11 +1,10 @@
 defmodule AdventOfCode2018.Day03.Part2 do
-  alias AdventOfCode2018.Day03.Part1
   alias AdventOfCode2018.Day03.Claims
   alias AdventOfCode2018.Day03.Fabric
 
   def intact_claim(file_path) do
     claims = Claims.extract(file_path)
-    fabric = Part1.fabric_occupation(claims)
+    fabric = Fabric.occupation(claims)
 
     claims
     |> Enum.find(nil, &is_intact?(&1, fabric))

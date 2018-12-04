@@ -5,14 +5,9 @@ defmodule AdventOfCode2018.Day03.Part1 do
   def overlapped_tiles(file_path) do
     file_path
     |> Claims.extract
-    |> fabric_occupation
+    |> Fabric.occupation
     |> Map.values
     |> Enum.count(fn occupation -> occupation > 1 end)
-  end
-
-  def fabric_occupation(claims) do
-    claims
-    |> Enum.reduce(%{}, fn claim, fabric -> Fabric.mark_occuped_space(claim, fabric) end)
   end
 end
 
