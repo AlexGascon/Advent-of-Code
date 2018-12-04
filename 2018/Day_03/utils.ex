@@ -16,6 +16,7 @@ defmodule AdventOfCode2018.Day03.Claims do
       height: claim |> parse_height 
     ]
   end
+
   defp parse_id(claim),     do: claim |> String.split("#") |> Enum.at(1) |> String.split |> Enum.at(0) |> String.to_integer
   defp parse_left(claim),   do: claim |> String.split(",") |> Enum.at(0) |> String.split |> Enum.at(2) |> String.to_integer
   defp parse_top(claim),    do: claim |> String.split(",") |> Enum.at(1) |> String.split(":") |> Enum.at(0) |> String.to_integer
