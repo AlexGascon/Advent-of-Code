@@ -13,18 +13,22 @@ defmodule AdventOfCode2018.Day05.Part1 do
     |> Enum.reverse
   end
 
-  def reduction([], result), do: result
-  def reduction([start | []], result), do: [start] ++ result
-  def reduction([start | [second | rest]], result) when second + 32 == start or start + 32 == second do
-    reduce_result(rest, result)
+  defmacro is_opposite_polarity?(unit1, unit2) do
+    quote do: (unquote(unit1) + 32 == unquote(unit2)) or (unquote(unit2) + 32 == unquote(unit1))
   end
-  def reduction([start | rest], result), do: reduction(rest, [start] ++ result)
+
+  def reduction([], accumulated_polymer), do: accumulated_polymer
+  def reduction([unit | []], accumulated_polymer), do: [unit] ++ accumulated_polymer
+  def reduction([unit | [next_unit | polymer]], accumulated_polymer) when is_opposite_polarity?(unit, next_unit) do
+    reduce_accumulated_polymer(polymer, accumulated_polymer)
+  end
+  def reduction([unit | polymer], accumulated_polymer), do: reduction(polymer, [unit] ++ accumulated_polymer)
 
 
-  def reduce_result([next | t], [last | t2]) when last + 32 == next or next + 32 == last do
-    reduce_result(t, t2)
+  def reduce_accumulated_polymer([next | t], [last | t2]) when is_opposite_polarity?(next, last) do
+    reduce_accumulated_polymer(t, t2)
   end
-  def reduce_result(rest, result), do: reduction(rest, result)
+  def reduce_accumulated_polymer(polymer, accumulated_polymer), do: reduction(polymer, accumulated_polymer)
 end
 
 ExUnit.start
