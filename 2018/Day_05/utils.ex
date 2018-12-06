@@ -1,5 +1,4 @@
 defmodule AdventOfCode2018.Day05.Polymer do
-
   def reduce(polymer) do
     polymer
     |> reduction([])
