@@ -18,3 +18,5 @@ Day 4 - Repose Record: [Part 1](https://github.com/AlexGascon/Advent-of-Code/blo
 Day 5 - Alchemical Reduction: [Part 1](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_05/part_1.exs), [Part 2](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_05/part_2.exs)
 
 Day 6 - Chronal Coordinates: [Part 1](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_06/elixir/lib/part_1.ex), [Part 2](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_06/elixir/lib/part_2.ex)
+
+Day 7 - The Sum of Its Parts: [Part 1](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_07/elixir/lib/part_1.ex), [Part 2](https://github.com/AlexGascon/Advent-of-Code/blob/master/2018/Day_07/elixir/lib/part_2.ex)
