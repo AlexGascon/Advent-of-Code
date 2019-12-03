@@ -8,11 +8,19 @@ defmodule AdventOfCode2019.Day02.Part1 do
 
   @integers_per_block 4
 
-  def solution(instructions) do
-    instructions
+  import AdventOfCode2019.Utils
+
+  def solution(filename) do
+    filename
+    |> get_instructions
     |> set_to_1202_alarm_state
     |> execute_instructions
     |> Enum.at(0)
+  end
+
+  def get_instructions(filename) do
+    filename
+    |> read_int_list
   end
 
   def set_to_1202_alarm_state(instructions) do

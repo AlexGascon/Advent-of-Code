@@ -26,6 +26,6 @@ defmodule AdventOfCode2019.Utils do
   def read_int_list(file_path) do
     file_path
     |> read_list
-    |> Stream.map(&String.to_integer/1)
+    |> Enum.map(&String.to_integer/1)
   end
 end
