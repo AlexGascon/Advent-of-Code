@@ -4,13 +4,11 @@ import kotlin.test.assertEquals
 val FILENAME_TEST = "src/main/kotlin/day05/input-test.txt"
 val FILENAME = "src/main/kotlin/day05/input"
 
-class Seat(val id: Int, val position: Pair<Int, Int>)
-
-class SeatFactory {
+class Seat(val id: Int, val position: Pair<Int, Int>) {
    companion object {
        private const val ROW_ID_SIZE = 7
 
-       fun createSeat(boardingId: String): Seat {
+       fun fromBoardingId(boardingId: String): Seat {
            val (rowId, colId) = boardingId.chunked(ROW_ID_SIZE)
            val row = rowId.replace("F", "0").replace("B", "1").toInt(2)
            val col = colId.replace("L", "0").replace("R", "1").toInt(2)
@@ -25,7 +23,7 @@ fun getSeatIds(filename: String): List<Int> {
     val boardingIds = File(filename).readLines()
 
     return boardingIds
-        .map { SeatFactory.createSeat(it) }
+        .map { Seat.fromBoardingId(it) }
         .map { seat -> seat.id }
 }
 
@@ -50,7 +48,7 @@ fun findYourSeatId(filename: String) : Int {
 }
 
 fun test() {
-    assertEquals(SeatFactory.createSeat("FBFBBFFRLR").id, 357)
+    assertEquals(Seat.fromBoardingId("FBFBBFFRLR").id, 357)
     println(highestSeatId(FILENAME_TEST))
 }
 

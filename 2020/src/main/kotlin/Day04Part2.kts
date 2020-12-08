@@ -1,4 +1,4 @@
-import Day04_02.Height.isHeight
+import Day04Part2.Height.isHeight
 import org.valiktor.Constraint
 import org.valiktor.ConstraintViolationException
 import org.valiktor.Validator
