@@ -7,9 +7,9 @@ val FILENAME = "src/main/kotlin/day07/input.txt"
 val WANTED_BAG = "shiny gold"
 
 
-data class Node(val value : String, val parents : MutableList<Node>, val children : MutableList<Node>) {
-    fun addChildren(node : Node) {
-        children.add(node)
+data class Node(val value : String, val parents : MutableList<Node>, val children : MutableMap<Node, Int>) {
+    fun addChildren(node : Node, count : Int) {
+        children.put(node, count)
     }
 
     fun addParent(node : Node) {
@@ -17,18 +17,32 @@ data class Node(val value : String, val parents : MutableList<Node>, val childre
     }
 
     override fun toString() : String {
-        return "Node(${value}, parents: ${parents.map { it.value }}, children: ${children.map { it.value }}"
+        return "Node(${value}, parents: ${parents.map { it.value }}, children: ${children.map { it.key }}"
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
     }
 
     fun getAncestors() : Set<String> {
         val nodeAncestors = mutableSetOf<String>()
-        val nodeParents = parents.map { it.value }.toSet()
-        val olderAncestors = parents.map { it.getAncestors() }
+        val nodeParents : Set<String> = parents.map { it.value }.toSet()
+        val olderAncestors : Set<String> = parents.map { it.getAncestors() }.flatten().toSet()
 
-        nodeAncestors.addAll(nodeParents)
-        olderAncestors.forEach { nodeAncestors.addAll(it) }
+        nodeAncestors.apply {
+            addAll(nodeParents)
+            addAll(olderAncestors)
+        }
 
         return nodeAncestors
+    }
+
+    fun getDescendantsCount() : Int {
+        if(children.isEmpty()) {
+            return 1
+        }
+
+        return 1 + children.map { (node, amount) -> amount * node.getDescendantsCount() }.sum()
     }
 }
 
@@ -45,10 +59,10 @@ data class LuggageRuleCollection(val luggageMap: MutableMap<String, Node>) {
             val currentRuleNode = getNodeOrDefault(luggageRule.bagPattern)
 
             // Add the children and parents
-            luggageRule.allowedBags.forEach { bagPattern, _ ->
+            luggageRule.allowedBags.forEach { bagPattern, bagAmount ->
                 val allowedBagNode = getNodeOrDefault(bagPattern)
 
-                currentRuleNode.addChildren(allowedBagNode)
+                currentRuleNode.addChildren(allowedBagNode, bagAmount)
                 allowedBagNode.addParent(currentRuleNode)
             }
         }
@@ -59,12 +73,16 @@ data class LuggageRuleCollection(val luggageMap: MutableMap<String, Node>) {
     fun getNodeOrDefault(bagPattern : String) : Node {
         return luggageMap.getOrPut(
             bagPattern,
-            { -> Node(bagPattern, mutableListOf(), mutableListOf()) }
+            { -> Node(bagPattern, mutableListOf(), mutableMapOf()) }
         )
     }
 
     fun getContainerCountFor(bagPattern : String) : Int {
         return getNodeOrDefault(bagPattern).getAncestors().size
+    }
+
+    fun getContentCountFor(bagPattern : String) : Int {
+        return getNodeOrDefault(bagPattern).getDescendantsCount() - 1 // We don't count the bag itself as contained
     }
 }
 
@@ -142,5 +160,23 @@ fun partOne() {
     println("Shiny gold bag containers: ${solution}")
 }
 
+fun testTwo() {
+    val luggageRules = readRules(FILENAME_TEST)
+    val luggageRuleCollection = LuggageRuleCollection.createEmpty().fillFromListOfRules(luggageRules)
+
+    val solution = luggageRuleCollection.getContentCountFor(WANTED_BAG)
+    println("TEST - Shiny gold bag content: ${solution} bags")
+}
+
+fun partTwo() {
+    val luggageRules = readRules(FILENAME)
+    val luggageRuleCollection = LuggageRuleCollection.createEmpty().fillFromListOfRules(luggageRules)
+
+    val solution = luggageRuleCollection.getContentCountFor(WANTED_BAG)
+    println("Shiny gold bag content: ${solution} bags")
+}
+
 test()
 partOne()
+testTwo()
+partTwo()
