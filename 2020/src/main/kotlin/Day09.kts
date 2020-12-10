@@ -1,10 +1,14 @@
 import java.io.File
+import kotlin.test.currentStackTrace
 
 val FILENAME = "src/main/kotlin/day09/input.txt"
 val FILENAME_TEST = "src/main/kotlin/day09/input-test.txt"
 
 val WINDOW_SIZE = 25
 val WINDOW_SIZE_TEST = 5
+
+val SUMMANDS_TARGET : Long = 29221323
+val SUMMANDS_TARGET_TEST : Long = 127
 
 fun readNumbers(filename: String) : List<Long> {
     return File(filename).readLines().map { it.toLong() }
@@ -44,6 +48,29 @@ fun isPossibleSum(target: Long, numbers: List<Long>) : Boolean {
     return isPossible
 }
 
+fun findContiguousSummands(target: Long, numbers: List<Long>) : List<Long> {
+    val currentSummands = mutableListOf<Long>()
+    var currentPosition = 0
+
+    while(true) {
+        val number = numbers[currentPosition]
+        val currentSum = currentSummands.sum()
+        //println("SUMMANDS: ${currentSummands} - SUM: ${currentSum} - TARGET: ${target}")
+
+        when {
+            currentSum == target ->
+                return currentSummands
+            currentSum < target -> {
+                currentSummands.add(number)
+                currentPosition += 1
+            }
+            currentSum > target -> {
+                currentSummands.removeAt(0)
+            }
+        }
+    }
+}
+
 fun test() {
     val numbers = readNumbers(FILENAME_TEST)
 
@@ -60,5 +87,25 @@ fun partOne() {
     println("Solution = ${solution}")
 }
 
+fun testTwo() {
+    val numbers = readNumbers(FILENAME_TEST)
+
+    val summands = findContiguousSummands(SUMMANDS_TARGET_TEST, numbers)
+    val solution = summands.min()!!.plus(summands.max()!!)
+
+    println("TEST - Solution = ${solution}")
+}
+
+fun partTwo() {
+    val numbers = readNumbers(FILENAME)
+
+    val summands = findContiguousSummands(SUMMANDS_TARGET, numbers)
+    val solution = summands.min()!!.plus(summands.max()!!)
+
+    println("Solution = ${solution}")
+}
+
 test()
 partOne()
+testTwo()
+partTwo()
