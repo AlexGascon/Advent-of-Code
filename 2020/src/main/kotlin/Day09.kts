@@ -1,5 +1,4 @@
 import java.io.File
-import kotlin.test.currentStackTrace
 
 val FILENAME = "src/main/kotlin/day09/input.txt"
 val FILENAME_TEST = "src/main/kotlin/day09/input-test.txt"
