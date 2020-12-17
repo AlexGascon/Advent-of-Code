@@ -3,15 +3,19 @@ defmodule Mix.Tasks.Solution do
 
   @impl Mix.Task
   def run(args) do
-    case run_tests do
-      :ok ->
-        day = args |> Enum.at(0) |> String.to_integer
-        [part1_solution, part2_solution] = obtain_solution(day)
-        {:ok, ["Part 1": part1_solution, "Part 2": part2_solution]}
-      error ->
-        {:error, error}
-    end
+    run_tests
+    |> process_tests_result(args)
     |> IO.inspect(label: "RESULT")
+  end
+
+  defp process_tests_result(:ok, args) do
+    day = args |> Enum.at(0) |> String.to_integer
+    [part1_solution, part2_solution] = obtain_solution(day)
+    {:ok, ["Part 1": part1_solution, "Part 2": part2_solution]}
+  end
+
+  defp process_tests_result(error, _) do
+    {:error, error}
   end
 
   defp obtain_solution(day) do

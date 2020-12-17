@@ -26,8 +26,8 @@ defmodule AdventOfCode2019.Day02.Part2 do
           {alarm, get_solution_for_alarm(instructions, alarm)}
         end)
       end),
-      fn {alarm, result} -> result == @desired_solution
-    end)
+      fn {_alarm, result} -> result == @desired_solution end
+    )
   end
 
   defp format_alarm({_alarm = {noun, verb}, @desired_solution}) do
