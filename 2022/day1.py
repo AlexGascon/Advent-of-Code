@@ -25,25 +25,50 @@ Consider your entire calibration document. What is the sum of all of the calibra
 
 import re
 
-DIGIT_SUBSTRING_REGEX = re.compile("\D*(\d.*\d)\D*|\D*(\d)\D*")
+# Regex for part 1
+# DIGIT_SUBSTRING_REGEX = re.compile("\D*(\d.*\d)\D*|\D*(\d)\D*")
+DIGIT_SUBSTRING_REGEX = re.compile("\D*?((?=(\d|one|two|three|four|five|six|seven|eight|nine)))*\D*?")
+TEXT_TO_DIGIT_MAPPING = {
+    'one': 1,
+    'two': 2,
+    'three': 3,
+    'four': 4,
+    'five': 5,
+    'six': 6,
+    'seven': 7,
+    'eight': 8,
+    'nine': 9,
+}
+
+
+def extract_digits(line):
+    print("LINE:" + line)
+    digits = []
+    for groups in DIGIT_SUBSTRING_REGEX.findall(line):
+        print("GROUPS:" + str(groups))
+        for group in groups:
+            if not group:
+                continue
+
+            digits.append(convert_to_digit(group))
+    
+    if len(digits) == 0:
+        return [digits[0], digits[0]]
+
+    print("DIGITS:" + str(digits))
+    return [digits[0], digits[-1]]
+
+def convert_to_digit(group):
+    try:
+        return int(group)
+    except Exception:
+        return TEXT_TO_DIGIT_MAPPING[group]
+
 
 total = 0
 for line in open("inputs/day1.txt").readlines():
-    match = DIGIT_SUBSTRING_REGEX.match(line.strip())
-    print("LINE: " + line.strip())
-    multiple_digit_match = match.group(1)
-    
-    print("MATCH: " + str(match.groups()))
-    print()
+    [first_digit, last_digit] = extract_digits(line.strip())
+    total += int(f"{first_digit}{last_digit}")
 
-    if multiple_digit_match:
-        first_digit = multiple_digit_match[0]
-        last_digit = multiple_digit_match[-1]
-
-        total = total + int(f"{first_digit}{last_digit}")
-    else:
-        single_digit_match = match.group(2)
-        digit = single_digit_match[0]
-        total = total + int(f"{digit}{digit}")
 
 print(f"Result: {total}")
