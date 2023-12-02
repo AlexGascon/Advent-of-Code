@@ -27,6 +27,17 @@ import re
 
 # Regex for part 1
 # DIGIT_SUBSTRING_REGEX = re.compile("\D*(\d.*\d)\D*|\D*(\d)\D*")
+
+# Explanation for the regex
+# - \D*? matches non-digits (\D), zero or more (*) but as few as possible (?), i.e. prioritize the next parts of the regex
+# - Then, on the next group:
+#     - The outermost parentheses match the content multiple times (...)*
+#     - ?= allows overlapping matches - It matches without consuming string characters (i.e. if we have "oneight", match both "one" and "eight" even though they overlap)
+#     - Then we use | to combine matches, which can be either
+#         - A digit (\d)
+#         - Any of the words
+# - \D*?, again, matches as few non-digits as possible
+#     - We do this at the beginning and the end to ensure that the central part is as "greedy" as possible
 DIGIT_SUBSTRING_REGEX = re.compile("\D*?((?=(\d|one|two|three|four|five|six|seven|eight|nine)))*\D*?")
 TEXT_TO_DIGIT_MAPPING = {
     'one': 1,
@@ -42,10 +53,8 @@ TEXT_TO_DIGIT_MAPPING = {
 
 
 def extract_digits(line):
-    print("LINE:" + line)
     digits = []
     for groups in DIGIT_SUBSTRING_REGEX.findall(line):
-        print("GROUPS:" + str(groups))
         for group in groups:
             if not group:
                 continue
@@ -55,7 +64,6 @@ def extract_digits(line):
     if len(digits) == 0:
         return [digits[0], digits[0]]
 
-    print("DIGITS:" + str(digits))
     return [digits[0], digits[-1]]
 
 def convert_to_digit(group):
