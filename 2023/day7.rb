@@ -51,6 +51,29 @@ T55J5 and QQQJA are both three of a kind. QQQJA has a stronger first card, so it
 Now, you can determine the total winnings of this set of hands by adding up the result of multiplying each hand's bid with its rank (765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5). So the total winnings in this example are 6440.
 
 Find the rank of every hand in your set. What are the total winnings?
+
+--- Part Two ---
+To make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.
+
+To balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
+
+J cards can pretend to be whatever card is best for the purpose of determining hand type; for example, QJJQ2 is now considered four of a kind. However, for the purpose of breaking ties between two hands of the same type, J is always treated as J, not the card it's pretending to be: JKKK2 is weaker than QQQQ2 because J is weaker than Q.
+
+Now, the above example goes very differently:
+
+32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483
+
+32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.
+KK677 is now the only two pair, making it the second-weakest hand.
+T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4, and KTJJT gets rank 5.
+With the new joker rule, the total winnings in this example are 5905.
+
+Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
+
 =end
 
 module Day7
@@ -58,37 +81,75 @@ module Day7
     def matches?(hand)
       rule.call(hand)
     end
-
-    def to_s
-      ""
-    end
   end
 
-  Five = HandType.new(7000000, 'Five', proc { |hand| hand.counts.any? { |_, count| count == 5 } })
-  Four = HandType.new(6000000, 'Four', proc { |hand| hand.counts.any? { |_, count| count == 4 } })
-  Full = HandType.new(5000000, 'Full', proc { |hand| hand.counts.any? { |_, count| count == 3 } && hand.counts.any? { |_, count| count == 2 } })
-  Three = HandType.new(4000000, 'Three', proc { |hand| hand.counts.any? { |_, count| count == 3 } })
-  TwoPairs = HandType.new(3000000, 'Two pairs', proc { |hand| hand.counts.select { |_, count| count == 2 }.size == 2 })
-  Pair = HandType.new(2000000, 'Pair', proc { |hand| hand.counts.any? { |_, count| count == 2 } })
-  HighCard = HandType.new(1000000, 'High card', proc { |hand| hand.counts.all? { |_, count| count == 1 } })
-
   RULE_ORDER = [Five, Four, Full, Three, TwoPairs, Pair, HighCard].freeze
+
+  # PART 1
+  #
+  # Five = HandType.new(7000000, 'Five', proc { |hand| hand.counts.any? { |_, count| count == 5 } })
+  # Four = HandType.new(6000000, 'Four', proc { |hand| hand.counts.any? { |_, count| count == 4 } })
+  # Full = HandType.new(5000000, 'Full', proc { |hand| hand.counts.any? { |_, count| count == 3 } && hand.counts.any? { |_, count| count == 2 } })
+  # Three = HandType.new(4000000, 'Three', proc { |hand| hand.counts.any? { |_, count| count == 3 } })
+  # TwoPairs = HandType.new(3000000, 'Two pairs', proc { |hand| hand.counts.select { |_, count| count == 2 }.size == 2 })
+  # Pair = HandType.new(2000000, 'Pair', proc { |hand| hand.counts.any? { |_, count| count == 2 } })
+  # HighCard = HandType.new(1000000, 'High card', proc { |hand| hand.counts.all? { |_, count| count == 1 } })
+  #
+  # CARD_VALUES = {
+  #   'A' => 14,
+  #   'K' => 13,
+  #   'Q' => 12,
+  #   'J' => 11,
+  #   'T' => 10
+  # }.freeze
+
+  # PART 2
+  Five = HandType.new(7000000, 'Five', proc { |hand| hand.counts.any? { |_, count| count == 5 } })
+  Four = HandType.new(6000000, 'Four', proc { |hand| hand.counts_without_jokers.any? { |_, count| count == 4 } })
+  # Full is now impossible, but leaving it here for simplicity
+  Full = HandType.new(5000000, 'Full', proc { |hand| hand.counts_without_jokers.any? { |_, count| count == 3 } && hand.counts_without_jokers.any? { |_, count| count == 2 } })
+  Three = HandType.new(4000000, 'Three', proc { |hand| hand.counts_without_jokers.any? { |_, count| count == 3 } })
+  TwoPairs = HandType.new(3000000, 'Two pairs', proc { |hand| hand.counts_without_jokers.select { |_, count| count == 2 }.size == 2 })
+  Pair = HandType.new(2000000, 'Pair', proc { |hand| hand.counts_without_jokers.any? { |_, count| count == 2 } })
+  HighCard = HandType.new(1000000, 'High card', proc { |hand| hand.counts_without_jokers.all? { |_, count| count == 1 } })
+
   CARD_VALUES = {
     'A' => 14,
     'K' => 13,
     'Q' => 12,
-    'J' => 11,
-    'T' => 10
+    'T' => 10,
+    'J' => 1
   }.freeze
 
   class Hand
-    attr_accessor :text, :counts, :type, :bid
+    attr_accessor :text, :counts, :counts_without_jokers, :type, :bid
 
     def initialize(text, bid)
       @text = text
       @bid = bid
       @counts = text.chars.group_by(&:itself).transform_values(&:count)
-      @type = RULE_ORDER.find { |rule| rule.matches? self }
+      @counts_without_jokers = @counts.except('J')
+      # PART 1
+      # @type = RULE_ORDER.find { |rule| rule.matches? self }
+      # PART 2
+      @type = get_type
+    end
+
+    def get_type # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength
+      base_rule = RULE_ORDER.find { |rule| rule.matches? self }
+      current_rule = base_rule
+      number_of_jokers = counts['J'] || 0
+
+      
+      Range.new(0, number_of_jokers, true).each do |i|
+        current_rule = Five if current_rule == Four
+        current_rule = Four if current_rule == Three
+        current_rule = Three if current_rule == Pair
+        current_rule = Full if current_rule == TwoPairs
+        current_rule = Pair if current_rule == HighCard
+      end
+
+      current_rule
     end
 
     def any?(&blk)
@@ -108,6 +169,20 @@ module Day7
   end
 
   def self.part1 # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    ['inputs/day7.txt', 'inputs/test/day7.txt'].each do |filename|
+      hands = []
+      File.open(filename).readlines.each do |line|
+        hand_text, bid = line.strip.split
+        hand = Hand.new(hand_text, bid.to_i)
+        hands.append(hand)
+      end
+
+      result = hands.sort_by(&:value).each_with_index.map { |hand, index| hand.bid * (index + 1) }.sum
+      puts "RESULT = #{result}"
+    end
+  end
+
+  def self.part2 # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     ['inputs/day7.txt', 'inputs/test/day7.txt'].each do |filename|
       hands = []
       File.open(filename).readlines.each do |line|
