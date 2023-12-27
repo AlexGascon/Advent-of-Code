@@ -90,12 +90,18 @@ class Stack():
 def diff(nums):
     return [b - a for a, b in zip(nums, nums[1:])]
 
-def extrapolated(original, differences):
-    return [*original, original[-1] + differences[-1]]
+def extrapolated(original, differences, backwards=False):
+    if backwards:
+        # Python lists are linked lists underneath, so this is more efficient
+        result = [original[0] - differences[0]]
+        result.extend(original)
+        return result
+    else:
+        return [*original, original[-1] + differences[-1]]
 
 
 class Day9:
-    def part1(self, test=False):
+    def _main(self, part2=False, test=False):
         filename = 'inputs/test/day9.txt' if test else 'inputs/day9.txt'
         lists = open(filename).readlines()
         num_lists = [
@@ -113,8 +119,18 @@ class Day9:
                 current_list = diff(current_list)
 
             while not stack.is_empty():
-                current_list = extrapolated(stack.pop(), current_list)
+                current_list = extrapolated(stack.pop(), current_list, backwards=part2)
             
-            new_numbers.append(current_list[-1])
+            if part2:
+                new_numbers.append(current_list[0])
+            else:
+                new_numbers.append(current_list[-1])
 
         print(f"RESULT: {sum(new_numbers)}")
+
+
+    def part1(self, test=False):
+        self._main()
+
+    def part2(self, test=False):
+        self._main(part2=True)
